@@ -4,11 +4,13 @@ import Root from './pages/Root';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
 import LogIn from './pages/LogIn';
-import Formik from './pages/Formik';
+import Formikk from './pages/Formik';
 import Products from './pages/Products';
 import Product from './pages/Product';
 import Contact from './pages/Contact';
 import Cart from './pages/Cart';
+import { UserProvider } from './store/auth-context';
+import { CartProvider } from './store/Cart-Context';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +20,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: '/signup', element: <SignUp /> },
       { path: '/login', element: <LogIn /> },
-      { path: '/formik', element: <Formik /> },
+      { path: '/formik', element: <Formikk /> },
       { path: '/products', element: <Products /> },
       { path: '/contact', element: <Contact /> },
       { path: '/cart', element: <Cart /> },
@@ -31,7 +33,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <CartProvider>
+      <UserProvider>
+        <RouterProvider router={router} />
+      </UserProvider>
+    </CartProvider>
+  );
 }
 
 export default App;

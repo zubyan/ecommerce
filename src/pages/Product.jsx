@@ -5,16 +5,11 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addItemToCart } from '../cart/cartSlice';
 import { ShopContext } from '../context/shop-context';
+import { useCart } from '../store/Cart-Context';
 
-const Product = ({ product }) => {
-  const dispatch = useDispatch();
-
-  const handleAddToCart = () => {
-    dispatch(addItemToCart(product));
-  };
-
-  //   const { addToCart } = useContext(ShopContext);
-  const [data, setData] = useState([]);
+const Product = () => {
+  const [product, setProduct] = useState([]);
+  const { addToCart } = useCart();
   const param = useParams();
   useEffect(() => {
     async function articleData() {
@@ -22,7 +17,7 @@ const Product = ({ product }) => {
         const response = await axios.get(
           `https://fakestoreapi.com/products/${param.id}`
         );
-        setData(response.data);
+        setProduct(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -31,7 +26,7 @@ const Product = ({ product }) => {
     articleData();
   }, [param.id]);
 
-  console.log(data);
+  console.log(product);
   return (
     <section class="text-gray-600 body-font overflow-hidden">
       <div class="container px-5 py-24 mx-auto">
@@ -39,11 +34,11 @@ const Product = ({ product }) => {
           <img
             alt="ecommerce"
             class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded"
-            src={data.image}
+            src={product.image}
           />
           <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">
-              {data.title}
+              {product.title}
             </h1>
             <div class="flex mb-4">
               <span class="flex items-center">
@@ -103,7 +98,7 @@ const Product = ({ product }) => {
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
                 <span class="text-gray-600 ml-3">
-                  {/* {data.rating.count} Reviews */}
+                  {/* {product.rating.count} Reviews */}
                 </span>
               </span>
               <span class="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2s">
@@ -145,15 +140,17 @@ const Product = ({ product }) => {
                 </a>
               </span>
             </div>
-            <p class="leading-relaxed">{data.description}</p>
+            <p class="leading-relaxed">{product.description}</p>
             <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5"></div>
             <div class="flex">
               <span class="title-font font-medium text-2xl text-gray-900">
-                ${data.price}
+                ${product.price}
               </span>
               <button
                 class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
-                onClick={handleAddToCart}
+                onClick={() => {
+                  addToCart(product);
+                }}
               >
                 Add to Cart
               </button>
