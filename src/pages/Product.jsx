@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { addItemToCart } from '../cart/cartSlice';
+// import { addItemToCart } from '../cart/cartSlice';
 import { ShopContext } from '../context/shop-context';
 import { useCart } from '../store/Cart-Context';
 
